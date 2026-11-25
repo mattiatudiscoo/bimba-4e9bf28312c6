@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8eff0">
+<meta name="description" content="L'album di Bimba e Mattia. Ricordi, parole e cose da vivere insieme, dal 19 dicembre 2025.">
+<title>Per te, Bimba · Para ti</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="album.css?v=20261123r2">
+</head>
+<body class="sigillata">
+<div id="petali"></div>
+
+<div id="busta">
+  <span class="eti">Un regalo per te</span>
+  <h1 class="serif" id="busta-nome"></h1>
+  <div class="lettera" id="lettera" role="button" tabindex="0" aria-label="Apri la busta"><div class="corpo"></div><div class="lembo"></div><div class="sigillo">♥</div></div>
+  <button class="btn" id="apri">Tocca per aprire</button>
+  <div class="gate" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><path class="base" d="M50 88C10 56 2 30 22 16C36 7 48 14 50 26C52 14 64 7 78 16C98 30 90 56 50 88Z"/><path class="traccia" id="cuore-traccia" d="M50 88C10 56 2 30 22 16C36 7 48 14 50 26C52 14 64 7 78 16C98 30 90 56 50 88Z"/></svg>
+    <small>oppure ripassa il cuore con il dito</small>
+  </div>
+</div>
+
+<nav class="album-nav" aria-label="Il nostro album"><a class="monogramma" href="#s-hero">S & M</a><div><a href="#s-intro" lang="es">Nosotros</a><a href="#s-galleria" lang="es">Recuerdos</a><a href="#s-vali">Per te</a></div></nav>
+<main id="album" inert>
+  <section id="s-hero" lang="it">
+    <div class="copertina" id="copertina">
+      <div class="vuoto" id="copertina-vuoto" aria-hidden="true">S&M</div>
+      <div class="velo"><div class="per">Per</div><h2 class="serif" id="hero-nome"></h2><div class="serif" id="hero-coppia" style="font-size:18px"></div><div class="data" id="hero-data"></div></div>
+    </div>
+    <div class="musica" id="musica"><button class="suona" id="suona" aria-label="Riproduci la musica">▶</button><div class="tx"><small>La nostra canzone</small><span class="serif" id="musica-titolo"></span></div></div>
+  </section>
+
+  <section id="s-intro" lang="es">
+    <h1 class="nomi serif" id="nomi"></h1>
+    <div class="polaroid"><div class="foto" id="foto"></div><div class="did serif">nuestra primera foto</div></div>
+    <div class="contatore">
+      <div class="serif">Juntos desde hace</div>
+      <div class="grande serif" id="durata"></div>
+      <div class="hms" id="hms"></div>
+    </div>
+  </section>
+
+  <section id="s-galleria" lang="es">
+    <div class="galleria-box">
+      <div class="eti">Momentos que no se borran</div>
+      <h2 class="serif">Nuestros momentos</h2>
+      <div class="galleria" id="galleria" role="region" aria-label="Galería de nuestros momentos" tabindex="0"></div>
+      <div class="puntini" id="puntini"></div>
+    </div>
+  </section>
+
+  <section id="s-lettera" lang="it">
+    <div class="lettera-carta">
+      <div class="eti">Una lettera per te</div>
+      <h2 class="serif">Quello che non so dirti a voce</h2>
+      <div id="testo-lettera"></div>
+    </div>
+  </section>
+
+  <section id="s-tappe" lang="it">
+    <div class="carta">
+      <div class="eti">La nostra storia</div>
+      <h2 class="serif">La linea del tempo</h2>
+      <div class="giorni"><div class="serif n" id="giorni-n"></div><div class="t">giorni insieme</div></div>
+      <div class="linea" id="linea"></div>
+      <div class="vocali" id="vocali"></div>
+    </div>
+  </section>
+
+  <section id="s-mappa" lang="it">
+    <div class="carta">
+      <div class="eti">Luoghi da ricordare</div>
+      <h2 class="serif">I nostri posti</h2>
+      <div id="mappa" role="region" aria-label="Mappa dei nostri posti"></div>
+    </div>
+  </section>
+
+  <section id="s-lista" lang="es">
+    <div class="carta">
+      <div class="eti">Cosas que quiero hacer contigo</div>
+      <h2 class="serif">Nuestra lista</h2>
+      <ul class="lista" id="lista"></ul>
+    </div>
+  </section>
+
+  <section id="s-vali" lang="it">
+    <div class="titolo-vali">
+      <h2 class="serif">I nostri buoni d'amore</h2>
+      <p>Riscattali quando vuoi. Ma ognuno si può usare una volta sola.</p>
+    </div>
+    <div id="vali"></div>
+  </section>
+
+  <section id="s-ruota" lang="es">
+    <div class="carta ruota-box">
+      <div class="eti">Para ti</div>
+      <h2 class="serif">La ruleta tiene una pregunta</h2>
+      <div class="sotto">Gira… y responde con el corazón</div>
+      <div class="ruota">
+        <div class="puntatore">▼</div>
+        <svg class="disco" id="disco" viewBox="-100 -100 200 200"></svg>
+        <div class="centro">♥</div>
+      </div>
+      <button class="btn" id="gira">Girar</button>
+      <div class="sotto" style="margin-top:10px">Puedes girar tantas veces como quieras 🙂</div>
+      <div id="esito" aria-live="polite"></div>
+      <div id="cita">
+        <div class="cuore">♥</div>
+        <h3 class="serif">¡Tenemos una cita!</h3>
+        <p id="cita-testo"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-quiz" lang="es">
+    <div class="carta quiz-box">
+      <div class="eti">Para ti</div>
+      <h2 class="serif" id="quiz-domanda"></h2>
+      <div class="opzioni" id="opzioni"></div>
+      <div class="quiz-esito" id="quiz-esito" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-sorpresa" lang="it">
+    <div class="carta sorpresa-box">
+      <div class="cuore" aria-hidden="true">♥</div>
+      <h2 class="serif">Un'ultima sorpresa</h2>
+      <button class="btn" id="scopri" style="margin-top:16px">Scopri la sorpresa</button>
+      <div class="rivela" id="rivela" aria-live="polite"><h3 class="serif" id="sorpresa-titolo"></h3><p id="sorpresa-testo"></p></div>
+    </div>
+  </section>
+
+  <div class="chiusura">
+    <div class="serif" id="firma" lang="it"></div>
+    <p lang="es">Esta página guarda nuestros recuerdos para siempre.</p>
+  </div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ====== DA PERSONALIZZARE ======
+const CONFIG = {
+  bozza: true,                         // false solo per la consegna; sezioni non confermate nascoste
+  confermati: [],                     // id delle sezioni con contenuti scelti da Mattia
+  lei: 'Bimba',
+  lui: 'Mattia',
+  inizio: '2025-12-19T00:00:00',      // insieme dal 19/12/2025 (Moglie.md)
+  foto: 'foto.jpg',                    // la foto va nella stessa cartella del file
+  centro: [46.0620, 13.2350],
+  luoghi: [],                         // inserire solo luoghi veri forniti da Mattia
+  data: '19 dicembre 2025',
+  musica: 'musica.mp3',                // la vostra canzone, nella stessa cartella (se manca il lettore non compare)
+  musicaTitolo: 'La nostra canzone',
+  galleria: [                          // foto1.jpg ... nella stessa cartella; senza il file resta un cuore
+    {f: 'foto1.jpg', t: 'Un momento nuestro'}, {f: 'foto2.jpg', t: 'Un momento nuestro'}, {f: 'foto3.jpg', t: 'Un momento nuestro'},
+    {f: 'foto4.jpg', t: 'Un momento nuestro'}, {f: 'foto5.jpg', t: 'Un momento nuestro'}
+  ],
+  lettera: ['La tua lettera per Bimba troverà posto qui.', 'Testo da scrivere con le tue parole.'],
+  tappe: [                             // data + titolo + frase; aggiungine quante vuoi
+    {d: '19 dicembre 2025', t: 'Insieme dal 19 dicembre 2025', x: ''}
+  ],
+  vocali: [                            // messaggi vocali tuoi (file audio nella stessa cartella); quelli mancanti non compaiono
+    {t: 'Per te', f: 'vocale1.m4a'}, {t: 'Per quando sei triste', f: 'vocale2.m4a'}
+  ],
+  quiz: {domanda: 'Una pregunta sobre nuestra historia', opzioni: ['Opción A', 'Opción B', 'Opción C'], risposta: 'Pregunta y respuestas por personalizar.'},
+  sorpresa: {titolo: 'Il tuo messaggio speciale', testo: 'Da scegliere e scrivere prima della consegna.'},
+  lista: ['Viajar juntos', 'Ver el amanecer', 'Una escapada de fin de semana', 'Ir a un concierto', 'Cocinar juntos'],
+  vali: ['Un bacio', 'Un massaggio', 'Il film che scegli tu', 'La colazione a letto', 'Dormire abbracciati', 'Una serata al telefono'],
+  ruota: ['Sorpresa', 'Cena', 'Cine', 'Pícnic', 'Baile', 'Helado'],
+  domande: {Sorpresa: '¿Te preparo una sorpresa?', Cena: '¿Te llevo a cenar?', Cine: '¿Vamos al cine?', 'Pícnic': '¿Hacemos un pícnic?', Baile: '¿Te invito a bailar?', Helado: '¿Te invito a tomar un helado?'}
+};
+// ================================
+const $ = s => document.querySelector(s);
+// Una bozza non attribuisce a Mattia parole, luoghi o promesse non confermati.
+document.documentElement.dataset.modalita = CONFIG.bozza ? 'bozza' : 'consegna';
+const daConfermare = ['s-lettera','s-mappa','s-lista','s-vali','s-ruota','s-quiz','s-sorpresa'];
+if (CONFIG.bozza) {
+  const avviso = document.createElement('p');
+  avviso.className = 'avviso-bozza';
+  avviso.textContent = 'Anteprima per Mattia. I contenuti contrassegnati sono esempi da personalizzare, non ricordi o promesse confermati.';
+  $('.album-nav').after(avviso);
+  const avvisoBusta = document.createElement('p');
+  avvisoBusta.className = 'bozza-busta'; avvisoBusta.textContent = 'Anteprima per Mattia · Regalo da personalizzare';
+  $('#busta').prepend(avvisoBusta);
+}
+daConfermare.forEach(id => {
+  const sezione = document.getElementById(id);
+  if (CONFIG.confermati.includes(id)) return;
+  if (!CONFIG.bozza) { sezione.hidden = true; return; }
+  const avviso = document.createElement('p'); avviso.className = 'esempio';
+  avviso.textContent = sezione.lang === 'es' ? 'Ejemplo por personalizar. Contenido no confirmado.' : 'Esempio da personalizzare. Contenuto non confermato.';
+  sezione.prepend(avviso);
+});
+// Evita ancore a sezioni escluse nella versione di consegna.
+document.querySelectorAll('.album-nav a').forEach(a => { if (document.querySelector(a.getAttribute('href'))?.hidden) a.hidden = true; });
+// Il sito resta utilizzabile anche con archivio locale disabilitato o dati corrotti.
+const leggiStato = chiave => { try { const v = JSON.parse(localStorage.getItem(chiave) || '[]'); return Array.isArray(v) ? v.filter(Number.isInteger) : []; } catch { return []; } };
+const salvaStato = (chiave, valore) => { try { localStorage.setItem(chiave, JSON.stringify(valore)); } catch {} };
+$('#busta-nome').textContent = CONFIG.lei;
+$('#nomi').textContent = CONFIG.lei + ' & ' + CONFIG.lui;
+$('#firma').textContent = 'Con tutto il cuore, ' + CONFIG.lui;
+
+// foto, con un cuore al suo posto se manca il file
+$('#foto').innerHTML = '<span class="foto-riserva" lang="es">Nuestro primer capítulo</span>';
+const img = new Image();
+img.alt = 'Bimba e Mattia';
+img.onload = () => { $('#foto').innerHTML = ''; $('#foto').appendChild(img); };
+img.src = CONFIG.foto;
+
+// petali che cadono
+function petali(n) {
+  const c = $('#petali');
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('i');
+    p.className = 'petalo';
+    const s = 6 + Math.random() * 8;
+    p.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s * 1.3}px;animation-duration:${9 + Math.random() * 9}s;animation-delay:${Math.random() * 8}s;--dx:${(Math.random() - .5) * 120}px`;
+    c.appendChild(p);
+    setTimeout(() => p.remove(), 26000);
+  }
+}
+// Il movimento resta legato ai gesti: nessun timer di petali in sottofondo.
+
+// busta
+let mappa = null;
+function apri() {
+  const l = $('#lettera');
+  if (l.classList.contains('aperta')) return;
+  l.classList.add('aperta');
+  if (window.avviaMusica) window.avviaMusica();
+  setTimeout(() => {
+    $('#busta').classList.add('via');
+    document.body.classList.remove('sigillata');
+    $('#album').inert = false;
+    $('.album-nav').inert = false;
+    $('#s-hero').setAttribute('tabindex', '-1');
+    $('#s-hero').focus({preventScroll:true});
+    document.querySelectorAll('section').forEach(s => io.observe(s));
+    setTimeout(() => mappa?.invalidateSize(), 400);
+  }, 900);
+}
+$('#apri').onclick = apri;
+$('#lettera').onclick = apri;
+$('#lettera').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); apri(); } };
+$('.album-nav').inert = true;
+
+// le sezioni compaiono mentre si scorre
+const io = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('vis')), {threshold: .12});
+
+// contatore
+function aggiorna() {
+  const a = new Date(CONFIG.inizio), b = new Date();
+  let y = b.getFullYear() - a.getFullYear(), m = b.getMonth() - a.getMonth(), d = b.getDate() - a.getDate();
+  if (d < 0) { m--; d += new Date(b.getFullYear(), b.getMonth(), 0).getDate(); }
+  if (m < 0) { y--; m += 12; }
+  const pl = (n, u, p) => n + ' ' + (n === 1 ? u : p);
+  $('#durata').textContent = pl(y, 'año', 'años') + ', ' + pl(m, 'mes', 'meses') + ' y ' + pl(d, 'día', 'días');
+  const ms = b - a, z = v => String(v).padStart(2, '0');
+  $('#hms').textContent = z(Math.floor(ms / 36e5) % 24) + 'h ' + z(Math.floor(ms / 6e4) % 60) + 'm ' + z(Math.floor(ms / 1e3) % 60) + 's';
+}
+aggiorna();
+setInterval(aggiorna, 1000);
+
+// mappa
+if (window.L) {
+  mappa = L.map('mappa', {scrollWheelZoom: false}).setView(CONFIG.centro, 14);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {attribution: '© OpenStreetMap · © CARTO'}).addTo(mappa);
+  const ico = L.divIcon({className: '', html: '<div class="pin"></div>', iconSize: [22, 22], iconAnchor: [11, 22]});
+  CONFIG.luoghi.forEach(p => L.marker(p.c, {icon: ico}).addTo(mappa).bindPopup(p.n));
+} else {
+  $('#mappa').textContent = 'La mappa non è disponibile. Gli altri ricordi ti aspettano qui sotto.';
+}
+
+// lista: si spunta e si ricorda
+const salva = () => salvaStato('sam-lista', [...document.querySelectorAll('#lista li')].map((e, k) => e.classList.contains('fatto') ? k : -1).filter(k => k >= 0));
+const fatte = leggiStato('sam-lista');
+CONFIG.lista.forEach((t, i) => {
+  const li = document.createElement('li');
+  li.textContent = t; li.tabIndex = 0; li.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } };
+  if (fatte.includes(i)) li.className = 'fatto';
+  li.setAttribute('role', 'checkbox'); li.setAttribute('aria-checked', String(fatte.includes(i)));
+  li.onclick = () => { li.classList.toggle('fatto'); li.setAttribute('aria-checked', String(li.classList.contains('fatto'))); salva(); };
+  $('#lista').appendChild(li);
+});
+
+// buoni d'amore: ognuno una volta sola
+const usati = leggiStato('sam-vali');
+CONFIG.vali.forEach((t, i) => {
+  const d = document.createElement('div');
+  const gia = usati.includes(i);
+  d.className = 'vale' + (gia ? ' usato' : '');
+  d.innerHTML = `<div class="ic">♥</div><div class="tx"><small>Buono per</small><span class="serif">${t}</span></div><button class="btn pic">${gia ? 'Usato' : 'Riscatta'}</button>`;
+  const b = d.querySelector('button');
+  b.disabled = gia;
+  b.onclick = () => {
+    d.classList.add('usato'); b.textContent = 'Usato'; b.disabled = true;
+    usati.push(i); salvaStato('sam-vali', usati);
+    coriandoli(24);
+  };
+  $('#vali').appendChild(d);
+});
+
+// ruota
+const N = CONFIG.ruota.length, A = 360 / N, disco = $('#disco');
+const xy = (r, deg) => { const a = (deg - 90) * Math.PI / 180; return [r * Math.cos(a), r * Math.sin(a)]; };
+disco.insertAdjacentHTML('beforeend', '<circle r="99" fill="#f1ebe4" stroke="#fff" stroke-width="2"/>');
+CONFIG.ruota.forEach((t, i) => {
+  const [x0, y0] = xy(96, i * A), [x1, y1] = xy(96, (i + 1) * A), [tx, ty] = xy(66, i * A + A / 2);
+  disco.insertAdjacentHTML('beforeend',
+    `<path class="fetta" data-i="${i}" d="M0 0L${x0} ${y0}A96 96 0 0 1 ${x1} ${y1}Z"/>` +
+    `<text class="etichetta" data-i="${i}" transform="translate(${tx} ${ty}) rotate(${i * A + A / 2})">${t}</text>`);
+});
+let rot = 0, giro = false;
+function gira() {
+  if (giro) return;
+  giro = true; $('#gira').disabled = true;
+  $('#cita').style.display = 'none'; $('#esito').innerHTML = '';
+  disco.querySelectorAll('.vinta').forEach(e => e.classList.remove('vinta'));
+  const k = Math.floor(Math.random() * N);
+  const target = (360 - (k * A + A / 2)) % 360;          // la fetta k finisce sotto il puntatore
+  rot += 360 * 5 + ((target - (rot % 360)) + 360) % 360;
+  disco.style.transform = `rotate(${rot}deg)`;
+  setTimeout(() => {
+    disco.querySelectorAll(`[data-i="${k}"]`).forEach(e => e.classList.add('vinta'));
+    esito(CONFIG.ruota[k]);
+    giro = false; $('#gira').disabled = false; $('#gira').textContent = 'Volver a girar';
+  }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 50 : 4400);
+}
+$('#gira').onclick = gira;
+
+function esito(t) {
+  const e = $('#esito');
+  e.innerHTML = `<div class="dec">La ruleta ha decidido</div><div class="dom serif">${CONFIG.domande[t]}</div><div class="risposte"><button class="btn" id="si">Sí</button><button class="btn-no" id="no">Otra idea</button></div>`;
+  const no = $('#no');
+  const si = () => {
+    e.innerHTML = '';
+    $('#cita-testo').textContent = 'Prepárate: ' + t.toLowerCase() + ', y lo hacemos juntos.';
+    $('#cita').style.display = 'block';
+    coriandoli(60);
+    $('#cita').scrollIntoView({behavior: 'smooth', block: 'center'});
+  };
+  no.onclick = gira;
+  $('#si').onclick = si;
+}
+
+function coriandoli(n) {
+  const col = ['#b0707a', '#ead4d6', '#d79ba3', '#f3e3d3', '#8f5560'];
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement('i');
+    c.className = 'coriandolo';
+    c.style.cssText = `left:${Math.random() * 100}%;background:${col[i % 5]};animation-delay:${Math.random() * .6}s;--dx:${(Math.random() - .5) * 160}px;border-radius:${Math.random() > .5 ? '50%' : '2px'}`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+</script>
+<script>
+// ====== ampliamento 23/11 ======
+(() => {
+  const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h !== undefined) e.innerHTML = h; return e; };
+  // copertina
+  $('#hero-nome').textContent = CONFIG.lei;
+  $('#hero-coppia').textContent = CONFIG.lei + ' & ' + CONFIG.lui;
+  $('#hero-data').textContent = CONFIG.data;
+  const cop = new Image(); cop.alt = '';
+  cop.onload = () => { $('#copertina-vuoto').remove(); $('#copertina').prepend(cop); };
+  cop.src = CONFIG.foto;
+
+  // musica: compare solo se il file esiste
+  const mus = new Audio(); mus.loop = true; mus.preload = 'metadata';
+  const bt = $('#suona');
+  const aiutoMusica = document.createElement('p'); aiutoMusica.hidden = true; aiutoMusica.className = 'messaggio-stato'; aiutoMusica.setAttribute('aria-live','polite'); aiutoMusica.textContent = 'Tocca ▶ per ascoltare la nostra canzone.';
+  $('#musica').after(aiutoMusica);
+  const indicaPlay = () => { aiutoMusica.hidden = false; };
+  mus.addEventListener('canplay', () => { $('#musica').classList.add('pronta'); $('#musica-titolo').textContent = CONFIG.musicaTitolo; }, {once: true});
+  mus.src = CONFIG.musica;
+  const stato = () => { bt.textContent = mus.paused ? '▶' : '❚❚'; bt.setAttribute('aria-label', mus.paused ? 'Riproduci la musica' : 'Metti in pausa la musica'); };
+  bt.onclick = () => { mus.paused ? mus.play().catch(indicaPlay) : mus.pause(); };
+  mus.onplay = () => { aiutoMusica.hidden = true; stato(); }; mus.onpause = stato;
+  window.avviaMusica = () => { if ($('#musica').classList.contains('pronta')) mus.play().catch(indicaPlay); };
+
+  // galleria a scorrimento
+  const gal = $('#galleria'), pun = $('#puntini');
+  let fotoInAttesa = CONFIG.galleria.length, fotoCaricate = 0;
+  function aggiornaAlbum() {
+    if (fotoInAttesa) return;
+    pun.replaceChildren();
+    [...gal.children].forEach((_, i) => pun.appendChild(el('i', i ? '' : 'on')));
+    if (!fotoCaricate) {
+      gal.innerHTML = '<div class="scatto"><div class="im"><span class="foto-riserva">Un lugar para nuestros recuerdos</span></div><div class="did serif">Nuestro álbum</div></div>';
+      pun.replaceChildren();
+    }
+  }
+  CONFIG.galleria.forEach((g, i) => {
+    const c = el('div', 'scatto', '<div class="im"></div><div class="did serif"></div>');
+    c.querySelector('.did').textContent = g.t;
+    const im = new Image(); im.alt = g.t;
+    im.onload = () => { const b = c.querySelector('.im'); b.textContent = ''; b.appendChild(im); fotoCaricate++; fotoInAttesa--; aggiornaAlbum(); };
+    im.onerror = () => { c.remove(); fotoInAttesa--; aggiornaAlbum(); };
+    im.src = g.f;
+    gal.appendChild(c); pun.appendChild(el('i', i ? '' : 'on'));
+  });
+  aggiornaAlbum();
+  gal.addEventListener('scroll', () => {
+    const k = [...gal.children].reduce((best, c, i, all) => Math.abs(c.offsetLeft - gal.offsetLeft - gal.scrollLeft) < Math.abs(all[best].offsetLeft - gal.offsetLeft - gal.scrollLeft) ? i : best, 0);
+    [...pun.children].forEach((p, i) => p.classList.toggle('on', i === k));
+  }, {passive: true});
+
+  // lettera
+  CONFIG.lettera.forEach(t => { const p = el('p'); p.textContent = t; $('#testo-lettera').appendChild(p); });
+
+  // linea del tempo con i giorni
+  $('#giorni-n').textContent = Math.floor((new Date() - new Date(CONFIG.inizio)) / 864e5).toLocaleString('it-IT');
+  CONFIG.tappe.forEach(t => {
+    const e = el('div', 'tappa', '<small></small><b></b><span></span>');
+    e.querySelector('small').textContent = t.d; e.querySelector('b').textContent = t.t; e.querySelector('span').textContent = t.x;
+    $('#linea').appendChild(e);
+  });
+
+  // vocali: ognuno compare solo se il file esiste
+  let attivo = null;
+  CONFIG.vocali.forEach(v => {
+    const a = new Audio(); a.preload = 'metadata';
+    a.addEventListener('loadedmetadata', () => {
+      const barre = Array.from({length: 28}, (_, i) => `<i style="height:${Math.round(30 + Math.abs(Math.sin(i * 1.7)) * 55 + (i % 3) * 5)}%"></i>`).join('');
+      const w = el('div', 'vocale', `<button class="suona" aria-label="Ascolta il messaggio"></button><div class="onda">${barre}</div><span class="dur"></span>`);
+      const pl = w.querySelector('button'), onda = [...w.querySelectorAll('.onda i')], dur = w.querySelector('.dur');
+      const mm = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+      pl.textContent = '▶'; dur.textContent = mm(a.duration || 0);
+      pl.onclick = () => {
+        if (!a.paused) { a.pause(); return; }
+        if (attivo && attivo !== a) attivo.pause();
+        if (!mus.paused) mus.pause();
+        attivo = a; a.play().catch(() => {});
+      };
+      a.onplay = () => { pl.textContent = '❚❚'; };
+      a.onpause = () => { pl.textContent = '▶'; };
+      a.onended = () => { pl.textContent = '▶'; onda.forEach(o => o.classList.remove('on')); dur.textContent = mm(a.duration); };
+      a.ontimeupdate = () => { const k = Math.floor(onda.length * a.currentTime / (a.duration || 1)); onda.forEach((o, i) => o.classList.toggle('on', i < k)); dur.textContent = mm(a.currentTime); };
+      const nome = el('div', 'nome'); nome.textContent = v.t;
+      $('#vocali').append(nome, w);
+    }, {once: true});
+    a.src = v.f;
+  });
+
+  // quiz
+  $('#quiz-domanda').textContent = CONFIG.quiz.domanda;
+  CONFIG.quiz.opzioni.forEach(o => {
+    const op = el('button', 'opzione'); op.textContent = o;
+    op.onclick = () => {
+      document.querySelectorAll('.opzione').forEach(x => x.classList.remove('scelta')); op.classList.add('scelta');
+      $('#quiz-esito').textContent = CONFIG.quiz.risposta; coriandoli(18);
+    };
+    $('#opzioni').appendChild(op);
+  });
+
+  // sorpresa finale
+  $('#sorpresa-titolo').textContent = CONFIG.sorpresa.titolo;
+  $('#sorpresa-testo').textContent = CONFIG.sorpresa.testo;
+  $('#scopri').onclick = () => { $('#rivela').style.display = 'block'; $('#scopri').style.display = 'none'; coriandoli(80); $('#rivela').scrollIntoView({behavior: 'smooth', block: 'center'}); };
+
+  // Il gesto segue il cuore: muoversi altrove non contribuisce all'apertura.
+  const tr = $('#cuore-traccia'), len = tr.getTotalLength();
+  tr.style.strokeDasharray = len; tr.style.strokeDashoffset = len;
+  const svg = tr.ownerSVGElement, punti = Array.from({length:100}, (_,i) => tr.getPointAtLength(len*i/100)), passati = new Set();
+  let disegna = false, cuorePronto = false;
+  const traccia = e => {
+    if (!disegna) return;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
+    punti.forEach((q,i) => { if (Math.hypot(q.x-p.x,q.y-p.y)<11) passati.add(i); });
+    tr.style.strokeDashoffset = len*(1-passati.size/100);
+    if (passati.size >= 80) { cuorePronto = true; }
+  };
+  svg.addEventListener('pointerdown', e => { disegna = true; svg.setPointerCapture(e.pointerId); traccia(e); });
+  svg.addEventListener('pointermove', traccia);
+  svg.addEventListener('pointerup', () => { disegna = false; if (cuorePronto) apri(); });
+  svg.addEventListener('pointercancel', () => { disegna = false; cuorePronto = false; });
+})();
+</script>
+
+</body>
+</html>
